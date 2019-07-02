@@ -72,9 +72,9 @@ public class SecApplication {
         SysPermission permission = null;
         SysPermission permission2 = null;
         SysRole role = null;
-        SysRole role2 = null;
-        SysUser user = null;
-        SysUser user2 = null;
+        SysRole role2;
+        SysUser user;
+        SysUser user2;
         List<SysPermission> list2 = permissionService.list();
         if (list2.size() == 0) {
             permission = new SysPermission();

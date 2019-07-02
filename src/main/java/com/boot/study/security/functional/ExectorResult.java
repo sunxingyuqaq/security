@@ -1,7 +1,5 @@
 package com.boot.study.security.functional;
 
-import com.baomidou.mybatisplus.extension.api.R;
-
 /**
  * @author Xingyu Sun
  * @date 2019/6/29 9:54
