@@ -1,0 +1,30 @@
+server:
+  port: 9000
+spring:
+  aop:
+    auto: true
+    proxy-target-class: true
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: Gepoint
+    url: jdbc:mysql://localhost:3306/my_security?useSSL=false&serverTimezone=GMT%2B8
+jwt:
+  header: Authorization
+  prefix: Bearer
+  secret: eyJleHAiOjE1NDMyMDUyODUsInN1YiI6ImFkbWluIiwiY3JlYXRlZCI6MTU0MDYxMzI4N
+  expiration: 7200000   #毫秒
+  route:
+    login: /login
+    refresh: /refresh
+    register: /register
+#mybatis配置
+mybatis-plus:
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+  type-aliases-package: com.boot.study.security.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
+init: false

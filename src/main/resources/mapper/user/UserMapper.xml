@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC " -//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boot.study.security.dao.UserDao">
+
+    <resultMap id="BaseResultMap" type="com.boot.study.security.entity.SysUser">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="enable" jdbcType="BOOLEAN" property="enable"/>
+        <result column="sex" jdbcType="INTEGER" property="sex"/>
+        <collection property="roles" resultMap="BaseRoleMap"/>
+    </resultMap>
+
+    <resultMap id="BaseRoleMap" type="com.boot.study.security.entity.SysRole">
+        <id column="role_id" property="id"/>
+        <result column="role_name" property="roleName"/>
+        <collection property="permissions" ofType="com.boot.study.security.entity.SysPermission">
+            <id column="permission_id" property="id"/>
+            <result column="permission_name" property="permissionName"/>
+            <result column="permission_code" property="permissionCode"/>
+        </collection>
+    </resultMap>
+
+    <sql id="user_column">
+        u.id, u.username, u.`password`, u.`enable`, u.sex,
+    </sql>
+    <sql id="role_column">
+        r.id as role_id, r.role_name,
+    </sql>
+    <sql id="permission_column">
+        p.id as permission_id, p.permission_name, p.permission_code
+    </sql>
+
+    <select id="selectByUserName" parameterType="string" resultMap="BaseResultMap">
+        SELECT
+        <include refid="user_column"/>
+        <include refid="role_column"/>
+        <include refid="permission_column"/>
+        FROM sys_user u
+        LEFT JOIN user_role ur on ur.user_id = u.id
+        LEFT JOIN sys_role r on r.id = ur.role_id
+        LEFT JOIN role_permission rp ON rp.role_id = ur.role_id
+        LEFT JOIN sys_permission p ON p.id = rp.permission_id
+        WHERE u.username = #{username} AND u.`enable` = 1
+    </select>
+
+    <select id="selectPasswordByUsername" parameterType="string" resultType="string">
+        select sys_user.password from sys_user where sys_user.username = #{username}
+    </select>
+
+    <select id="selectUserByUsername" resultType="com.boot.study.security.entity.SysUser">
+        select * from sys_user where sys_user.username = #{username}
+    </select>
+
+    <select id="selectUserNameIsExist" parameterType="string" resultType="int">
+        select count(*) from sys_user where sys_user.username = #{username}
+    </select>
+
+    <select id="findAll" resultType="com.boot.study.security.entity.SysUser">
+        SELECT u.id, u.username, u.`password`, ur.role_id , r.role_name
+        FROM sys_user u
+        LEFT JOIN user_role ur on ur.user_id = u.id
+        LEFT JOIN sys_role r on r.id = ur.role_id
+    </select>
+</mapper>
