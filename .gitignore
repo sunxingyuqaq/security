@@ -1,9 +1,9 @@
 ##ignore this file##
 /target/
 
-.classpath
-.project
-.settings
-.iml
-.lic
-.idea
+*.classpath
+*.project
+*.settings
+*.iml
+*.lic
+*.idea
